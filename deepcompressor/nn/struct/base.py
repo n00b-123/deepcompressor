@@ -5,6 +5,7 @@ import types
 import typing as tp
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
+from typing_extensions import Self
 
 import torch.nn as nn
 
@@ -18,7 +19,7 @@ class BaseModuleStruct(ABC):
     _factories: tp.ClassVar[
         dict[
             type[nn.Module],
-            tp.Callable[[nn.Module, tp.Optional["BaseModuleStruct"], str, str, str, int], tp.Self],
+            tp.Callable[[nn.Module, tp.Optional["BaseModuleStruct"], str, str, str, int], Self],
         ]
     ]
 
@@ -75,7 +76,7 @@ class BaseModuleStruct(ABC):
         cls,
         module_types: type[nn.Module] | tuple[type[nn.Module], ...],
         /,
-        factory: tp.Callable[[nn.Module, tp.Optional["BaseModuleStruct"], str, str, str, int], tp.Self],
+        factory: tp.Callable[[nn.Module, tp.Optional["BaseModuleStruct"], str, str, str, int], Self],
         *,
         overwrite: bool = False,
     ) -> None:
@@ -123,7 +124,7 @@ class BaseModuleStruct(ABC):
         rkey: str = "",
         idx: int = 0,
         **kwargs,
-    ) -> tp.Self:
+    ) -> Self:
         """Construct a module struct from a module.
 
         Args:

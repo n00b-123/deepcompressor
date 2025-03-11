@@ -9,7 +9,7 @@ import torch.nn as nn
 
 from ...utils.common import join_name
 from .base import BaseModuleStruct
-
+from typing_extensions import Self
 __all__ = [
     "AttentionStruct",
     "SelfAttentionStruct",
@@ -396,7 +396,7 @@ class AttentionStruct(BaseModuleStruct):
         if self.add_o_proj is not None:
             yield self.add_out_proj_key, self.add_o_proj_name, self.add_o_proj, self, "add_o_proj"
 
-    def iter_attention_structs(self) -> tp.Generator[tp.Self, None, None]:
+    def iter_attention_structs(self) -> tp.Generator[Self, None, None]:
         yield self
 
     @classmethod
@@ -714,7 +714,7 @@ class TransformerBlockStruct(BaseModuleStruct):
         for attn_struct in self.attn_structs:
             yield from attn_struct.iter_attention_structs()
 
-    def iter_transformer_block_structs(self) -> tp.Generator[tp.Self, None, None]:
+    def iter_transformer_block_structs(self) -> tp.Generator[Self, None, None]:
         yield self
 
 

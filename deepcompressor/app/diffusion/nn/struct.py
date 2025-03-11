@@ -72,6 +72,9 @@ from deepcompressor.nn.struct.base import BaseModuleStruct
 from deepcompressor.utils.common import join_name
 
 from .attention import DiffusionAttentionProcessor
+from enum import Enum
+class StrEnum(str, Enum):
+    pass   # Custom definition for older Python versions
 
 # endregion
 
@@ -1055,7 +1058,7 @@ class DiffusionResnetStruct(BaseModuleStruct):
 
 @dataclass(kw_only=True)
 class UNetBlockStruct(DiffusionBlockStruct):
-    class BlockType(enum.StrEnum):
+    class BlockType(StrEnum):
         DOWN = "down"
         MID = "mid"
         UP = "up"
