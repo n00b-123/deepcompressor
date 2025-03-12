@@ -1,5 +1,5 @@
 pipeline:
-  name: flux.1-schnell
+  name: sd-turbo
   dtype: torch.bfloat16
 eval:
   num_steps: 4
@@ -7,15 +7,15 @@ eval:
   protocol: fmeuler{num_steps}-g{guidance_scale}
 quant:
   calib:
-    batch_size: 16
+    batch_size: 1
   wgts:
     calib_range:
-      element_batch_size: 64
-      sample_batch_size: 32
-      element_size: 512
+      element_batch_size: 32
+      sample_batch_size: 16
+      element_size: 256
       sample_size: -1
     low_rank:
-      sample_batch_size: 32
+      sample_batch_size: 16
       sample_size: -1
     skips: 
     - embed
@@ -27,9 +27,9 @@ quant:
     - up_sample
   ipts:
     calib_range:
-      element_batch_size: 64
-      sample_batch_size: 32
-      element_size: 512
+      element_batch_size: 32
+      sample_batch_size: 16
+      element_size: 256
       sample_size: -1
     skips: 
     - embed
@@ -43,16 +43,16 @@ quant:
     - up_sample
   opts:
     calib_range:
-      element_batch_size: 64
-      sample_batch_size: 32
-      element_size: 512
+      element_batch_size: 32
+      sample_batch_size: 16
+      element_size: 256
       sample_size: -1
   smooth:
     proj:
       element_batch_size: -1
-      sample_batch_size: 32
+      sample_batch_size: 16
       element_size: -1
       sample_size: -1
     attn:
-      sample_batch_size: 32
+      sample_batch_size: 16
       sample_size: -1

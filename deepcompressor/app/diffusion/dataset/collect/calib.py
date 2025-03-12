@@ -35,7 +35,7 @@ def collect(config: DiffusionPtqRunConfig, dataset: datasets.Dataset):
     assert isinstance(model, nn.Module)
     model.register_forward_hook(CollectHook(caches=caches), with_kwargs=True)
 
-    batch_size = config.eval.batch_size
+    batch_size = 1
     print(f"In total {len(dataset)} samples")
     print(f"Evaluating with batch size {batch_size}")
     pipeline.set_progress_bar_config(desc="Sampling", leave=False, dynamic_ncols=True, position=1)
@@ -51,7 +51,11 @@ def collect(config: DiffusionPtqRunConfig, dataset: datasets.Dataset):
         seeds = [hash_str_to_int(name) for name in filenames]
         generators = [torch.Generator(device=pipeline.device).manual_seed(seed) for seed in seeds]
         pipeline_kwargs = config.eval.get_pipeline_kwargs()
-
+        for i, (filename, prompt) in enumerate(zip(filenames, prompts)):
+            print(f"\n{'='*80}")
+            print(f"Image {i+1}:")
+            print(f"Filename: {filename}.png")
+            print(f"Prompt: {prompt}")
         task = config.pipeline.task
         control_root = config.eval.control_root
         if task in ["canny-to-image", "depth-to-image", "inpainting"]:

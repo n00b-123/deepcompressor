@@ -10,7 +10,7 @@ pipeline:
   device: cuda
   shift_activations: false
 eval:
-  num_samples: 5000
+  num_samples: 50
   height: null
   width: null
   guidance_scale: null
@@ -31,8 +31,8 @@ eval:
 quant:
   calib:
     data: qdiff
-    path: datasets/{dtype}/{model}/{protocol}/{data}/s128
-    num_samples: 128
+    path: datasets/{dtype}/{model}/{protocol}/{data}/s32
+    num_samples: 32
     num_workers: 8
   wgts:
     dtype: null
