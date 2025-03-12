@@ -7,7 +7,7 @@ eval:
   protocol: fmeuler{num_steps}-g{guidance_scale}
 quant:
   calib:
-    batch_size: 16
+    batch_size: 2
   wgts:
     calib_range:
       element_batch_size: 64

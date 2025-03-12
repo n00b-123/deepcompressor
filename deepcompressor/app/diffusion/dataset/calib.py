@@ -62,6 +62,7 @@ class DiffusionCalibCacheLoaderConfig(BaseDataLoaderConfig):
 
     def build_dataset(self) -> "DiffusionCalibDataset":
         """Build the calibration dataset."""
+        print("Output: ", self.path)
         return DiffusionCalibDataset(self.path, num_samples=self.num_samples)
 
     def build_loader(self) -> "DiffusionCalibCacheLoader":
