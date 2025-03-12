@@ -13,9 +13,11 @@ from diffusers.pipelines import (
     FluxFillPipeline,
     SanaPipeline,
 )
+from diffusers import DDPMPipeline
 from omniconfig import configclass
 from torch import nn
 from transformers import PreTrainedModel, PreTrainedTokenizer, T5EncoderModel
+from diffusers import StableDiffusionPipeline
 
 from deepcompressor.data.utils.dtype import eval_dtype
 from deepcompressor.quantizer.processor import Quantizer
@@ -344,6 +346,14 @@ class DiffusionPipelineConfig:
                 path = "black-forest-labs/FLUX.1-Fill-dev"
             elif name == "flux.1-schnell":
                 path = "black-forest-labs/FLUX.1-schnell"
+            elif name == "stable" or name == "runway-ml":  # Add this condition
+                path = "runwayml/stable-diffusion-v1-5"
+            elif name == "sd-turbo":
+                path = "stabilityai/sd-turbo"
+            elif name == "ddpm":
+                path = "google/ddpm-cifar10-32"
+            elif name == "dit":
+                path = "dit"
             else:
                 raise ValueError(f"Path for {name} is not specified.")
         if name in ["flux.1-canny-dev", "flux.1-depth-dev"]:
@@ -357,8 +367,16 @@ class DiffusionPipelineConfig:
                 pipeline.text_encoder.to(dtype)
             else:
                 pipeline = SanaPipeline.from_pretrained(path, torch_dtype=dtype)
+        elif name.startswith("stable"):
+            pipeline = DiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-2-base")
+        elif name.startswith("sd-turbo"):
+            pipeline = StableDiffusionPipeline.from_pretrained("stabilityai/sd-turbo")
+        elif name.startswith("dit"):
+            pipeline = DiffusionPipeline.from_pretrained("facebook/DiT-small")
+        elif name.startswith("ddpm"):
+            pipeline = DDPMPipeline.from_pretrained("google/ddpm-cifar10-32")
         else:
-            pipeline = AutoPipelineForText2Image.from_pretrained(path, torch_dtype=dtype)
+            pipeline = DiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-2-base")
         pipeline = pipeline.to(device)
         model = pipeline.unet if hasattr(pipeline, "unet") else pipeline.transformer
         replace_fused_linear_with_concat_linear(model)
