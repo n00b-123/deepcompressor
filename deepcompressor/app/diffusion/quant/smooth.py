@@ -609,7 +609,7 @@ def smooth_diffusion(
                 ),
                 desc="smoothing",
                 leave=False,
-                total=model.num_blocks,
+                total=model.num_blocks - 2,
                 dynamic_ncols=True,
             ):
                 smooth_diffusion_layer(
