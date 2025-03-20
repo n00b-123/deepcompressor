@@ -1,0 +1,110 @@
+enable_cache: true
+cache:
+  root: runs
+output:
+  root: runs
+  dirname: reference
+  job: run-50
+pipeline:
+  name: sd-turbo
+  path: ''
+  dtype: torch.bfloat16
+  device: cuda
+  shift_activations: false
+  enable_lora: false
+  task: text-to-image
+eval:
+  protocol: fmeuler8-g0
+  num_gpus: 1
+  batch_size: 1
+  batch_size_per_gpu: 1
+  height: null
+  width: null
+  clean_caption: null
+  num_steps: 8
+  guidance_scale: 0
+  num_samples: 50
+  benchmarks:
+  - MJHQ
+  - DCI
+  gt_metrics:
+  - clip_iqa
+  - clip_score
+  - image_reward
+  - fid
+  ref_metrics:
+  - psnr
+  - lpips
+  - ssim
+  - fid
+  gen_root: '{output}'
+  ref_root: ''
+  gt_stats_root: benchmarks/stats
+  control_root: benchmarks
+  chunk_start: 0
+  chunk_step: 1
+  chunk_only: false
+quant:
+  wgts:
+    dtype: null
+    zero_point: null
+    group_shapes:
+    - - -1
+      - -1
+      - -1
+    scale_dtypes:
+    - null
+    skips: []
+    enable_kernel_gptq: false
+    enable_low_rank: false
+    enable_calib_range: false
+  ipts:
+    dtype: null
+    zero_point: null
+    group_shapes:
+    - - -1
+      - -1
+      - -1
+    scale_dtypes:
+    - null
+    skips: []
+    static: false
+    enable_calib_range: false
+    allow_unsigned: false
+  opts:
+    dtype: null
+    zero_point: null
+    group_shapes:
+    - - -1
+      - -1
+      - -1
+    scale_dtypes:
+    - null
+    skips: []
+    static: false
+    enable_calib_range: false
+    allow_unsigned: false
+  calib:
+    data: qdiff
+    num_samples: 32
+    batch_size: 1
+    path: /content/deepcompressor/datasets/torch.bfloat16/sd-turbo/fmeuler8-g0/qdiff/s32
+    num_workers: 8
+  enable_rotation: false
+  enable_smooth: false
+  develop_dtype: torch.float32
+enable_text: false
+text_cache:
+  root: ''
+  path:
+    rotation: ''
+    reorder: ''
+    smooth: ''
+    wgts: ''
+    acts: ''
+seed: 12345
+skip_gen: false
+skip_eval: false
+load_from: ''
+save_model: ''
+copy_on_save: false
